@@ -1,0 +1,142 @@
+
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/patches.py(543) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/axes/_base.py(3086) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/patches.py(543) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/axis.py(1366) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+lib/matplotlib/table.py(397) None
+lib/matplotlib/table.py(397) None
+lib/matplotlib/axis.py(1366) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+draw: lib/matplotlib/axis.py(295) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/lines.py(733) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/table.py(397) None
+lib/matplotlib/table.py(397) None
+lib/matplotlib/table.py(397) None
+lib/matplotlib/patches.py(543) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/patches.py(543) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/patches.py(543) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/patches.py(543) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/patches.py(543) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/patches.py(543) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/image.py(619)
+lib/matplotlib/backends/backend_svg.py(953)
+lib/matplotlib/backend_bases.py(865)
+lib/matplotlib/table.py(397) None
+lib/matplotlib/table.py(397) None
+lib/matplotlib/table.py(397) None

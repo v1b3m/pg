@@ -1,0 +1,11 @@
+lib/matplotlib/figure.py(3062) None
+open_group(None): lib/matplotlib/backends/backend_svg.py(664)
+lib/matplotlib/patches.py(543) None
+lib/matplotlib/axes/_base.py(3086) None
+lib/matplotlib/axis.py(1366) None
+draw: lib/matplotlib/axis.py(295) None
+lib/matplotlib/lines.py(733) None
+lib/matplotlib/table.py(397) None
+lib/matplotlib/image.py(619)
+lib/matplotlib/backends/backend_svg.py(953)
+lib/matplotlib/backend_bases.py(865)

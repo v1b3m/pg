@@ -1,0 +1,17 @@
+{
+  "csrfmiddlewaretoken": [
+    "JOE7FI5iZpcgOlYPoEjZu1SwBZ6kAB1HIDZGPOLZRwTqaamRHDChOjOjqTMRAZvE"
+  ],
+  "name": ["thing_12"],
+  "subthings-TOTAL_FORMS": ["1"],
+  "subthings-INITIAL_FORMS": ["0"],
+  "subthings-MIN_NUM_FORMS": ["0"],
+  "subthings-MAX_NUM_FORMS": ["1000"],
+  "subthings-0-name": ["thing_1"],
+  "subthings-0-id": [""],
+  "subthings-0-thing": [""],
+  "subthings-__prefix__-name": [""],
+  "subthings-__prefix__-id": [""],
+  "subthings-__prefix__-thing": [""],
+  "_save": ["Save"]
+}

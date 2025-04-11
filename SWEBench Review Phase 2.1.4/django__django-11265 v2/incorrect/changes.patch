@@ -1,0 +1,33 @@
+index d69c24419b..c7db9f5918 100644
+--- a/django/db/models/sql/query.py
++++ b/django/db/models/sql/query.py
+@@ -1666,6 +1666,12 @@ class Query(BaseExpression):
+             filter_expr = (filter_lhs, OuterRef(filter_rhs.name))
+         # Generate the inner query.
+         query = Query(self.model)
++        # Propagate any FilteredRelation annotations to the inner query, if present.
++        if self._filtered_relations:
++            # Clone each FilteredRelation object for the new query.
++            query._filtered_relations = {
++                alias: fr.clone() for alias, fr in self._filtered_relations.items()
++            }
+         query.add_filter(filter_expr)
+         query.clear_ordering(True)
+         # Try to have as simple as possible subquery -> trim leading joins from
+diff --git a/tests/filtered_relation/tests.py b/tests/filtered_relation/tests.py
+index 5e85dff16c..94fce60467 100644
+--- a/tests/filtered_relation/tests.py
++++ b/tests/filtered_relation/tests.py
+@@ -98,6 +98,12 @@ class FilteredRelationTests(TestCase):
+             [self.author1]
+         )
+ 
++    def test_with_join_exclude(self):
++        qs = Author.objects.annotate(
++            book_alice=FilteredRelation('book', condition=Q(book__title__iexact='poem by alice')),
++        ).exclude(book_alice__isnull=False)
++        self.assertSequenceEqual(qs, [])
++
+     def test_with_join_and_complex_condition(self):
+         self.assertSequenceEqual(
+             Author.objects.annotate(
