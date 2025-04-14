@@ -1,0 +1,6 @@
+first convert the variable into a string, rather than working with the
+individual elements of the sequence.
+
+.. templatefilter:: slice
+
+``slice``

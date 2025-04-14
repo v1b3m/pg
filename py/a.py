@@ -1,1 +1,9 @@
-dt = timezone.make_aware(datetime.datetime(2017, 7, 6, 20, 50))
+class SubThingInline(admin.StackedInline):
+    model = SubThing
+
+
+@admin.register(Thing)
+class ThingAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    ordering = ("pkid",)
+    inlines = (SubThingInline,)
