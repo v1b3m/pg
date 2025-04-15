@@ -1,0 +1,66 @@
+index 3ce711f3f1..f8bc8ccefb 100644
+--- a/django/db/models/base.py
++++ b/django/db/models/base.py
+@@ -1705,22 +1705,30 @@ class Model(metaclass=ModelBase):
+         # Check related fields.
+         for field in related_fields:
+             _cls = cls
+-            fld = None
++            prev_fld = None
+             for part in field.split(LOOKUP_SEP):
+-                try:
+-                    fld = _cls._meta.get_field(part)
+-                    if fld.is_relation:
+-                        _cls = fld.get_path_info()[-1].to_opts.model
+-                except (FieldDoesNotExist, AttributeError):
+-                    if fld is None or fld.get_transform(part) is None:
++                if part == 'pk' and prev_fld is not None and prev_fld.is_relation:
++                    fld = _cls._meta.pk
++                else:
++                    try:
++                        fld = _cls._meta.get_field(part)
++                    except (FieldDoesNotExist, AttributeError):
++                        # If transform exists on the previous field, allow and continue
++                        if prev_fld is not None and prev_fld.get_transform(part) is not None:
++                            continue
++                        # No transform available: add error and stop processing this field string
+                         errors.append(
+                             checks.Error(
+-                                "'ordering' refers to the nonexistent field, "
+-                                "related field, or lookup '%s'." % field,
++                                "'ordering' refers to the nonexistent field, related field, or lookup '%s'." % field,
+                                 obj=cls,
+                                 id='models.E015',
+                             )
+                         )
++                        break
++                # Update current class and prev_fld
++                if fld.is_relation:
++                    _cls = fld.get_path_info()[-1].to_opts.model
++                prev_fld = fld
+ 
+         # Skip ordering on pk. This is always a valid order_by field
+         # but is an alias and therefore won't be found by opts.get_field.
+diff --git a/tests/invalid_models_tests/test_models.py b/tests/invalid_models_tests/test_models.py
+index 0f1d1e4dc3..8eb888b753 100644
+--- a/tests/invalid_models_tests/test_models.py
++++ b/tests/invalid_models_tests/test_models.py
+@@ -836,6 +836,18 @@ class OtherModelTests(SimpleTestCase):
+ 
+         self.assertFalse(Child.check())
+ 
++    def test_ordering_pointing_to_related_pk(self):
++        class Parent(models.Model):
++            pass
++
++        class Child(models.Model):
++            parent = models.ForeignKey(Parent, models.CASCADE)
++
++            class Meta:
++                ordering = ('parent__pk',)
++
++        self.assertFalse(Child.check())
++
+     def test_name_beginning_with_underscore(self):
+         class _Model(models.Model):
+             pass
