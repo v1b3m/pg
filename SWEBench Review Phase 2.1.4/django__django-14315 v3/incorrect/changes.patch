@@ -1,0 +1,13 @@
+index 339f1e863c..39a987e38d 100644
+--- a/django/db/backends/base__client.py
++++ b/django/db/backends/base__client.py
+@@ -21,6 +21,8 @@ class BaseDatabaseClient:
+ 
+     def runshell(self, parameters):
+         args, env = self.settings_to_cmd_args_env(self.connection.settings_dict, parameters)
+-        if env:
++        if env is not None:
++            # Merge with os.environ regardless of whether env is empty or not
+             env = {**os.environ, **env}
++        # If env is None, subprocess.run will inherit the current environment
+         subprocess.run(args, env=env, check=True)
