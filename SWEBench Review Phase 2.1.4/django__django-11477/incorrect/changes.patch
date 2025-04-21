@@ -1,0 +1,27 @@
+index 0e1c3d909c..e4f8654a8a 100644
+--- a/django/urls/base.py
++++ b/django/urls/base.py
+@@ -170,11 +170,21 @@ def translate_url(url, lang_code):
+         pass
+     else:
+         to_be_reversed = "%s:%s" % (match.namespace, match.url_name) if match.namespace else match.url_name
++        # Remove None values from kwargs to avoid passing None for optional groups
++        clean_kwargs = None
++        if match.kwargs:
++            clean_kwargs = {k: v for k, v in match.kwargs.items() if v is not None}
+         with override(lang_code):
+             try:
+-                url = reverse(to_be_reversed, args=match.args, kwargs=match.kwargs)
++                if match.args:
++                    # Use args only if no kwargs
++                    # However, if we removed None keys, we might still use kwargs if any remain
++                    # But match.args is only used when there are no named groups
++                    url_path = reverse(to_be_reversed, args=match.args, kwargs=clean_kwargs or {})
++                else:
++                    url_path = reverse(to_be_reversed, args=match.args, kwargs=clean_kwargs or {})
+             except NoReverseMatch:
+                 pass
+             else:
+-                url = urlunsplit((parsed.scheme, parsed.netloc, url, parsed.query, parsed.fragment))
++                url = urlunsplit((parsed.scheme, parsed.netloc, url_path, parsed.query, parsed.fragment))
+     return url
