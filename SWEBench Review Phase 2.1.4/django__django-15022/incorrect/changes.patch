@@ -1,0 +1,12 @@
+index 66f3396a6b..5b1e5090b5 100644
+--- a/django/contrib/admin/options.py
++++ b/django/contrib/admin/options.py
+@@ -1032,7 +1032,7 @@ class ModelAdmin(BaseModelAdmin):
+             orm_lookups = [construct_search(str(search_field))
+                            for search_field in search_fields]
+             for bit in smart_split(search_term):
+-                if bit.startswith(('"', "'")) and bit[0] == bit[-1]:
++                if bit.startswith(("\"", "'")) and bit[0] == bit[-1]:
+                     bit = unescape_string_literal(bit)
+                 or_queries = models.Q(
+                     *((orm_lookup, bit) for orm_lookup in orm_lookups),
