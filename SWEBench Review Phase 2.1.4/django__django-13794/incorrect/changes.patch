@@ -1,0 +1,49 @@
+index 1c844580c6..331ba85732 100644
+--- a/django/template/defaultfilters.py
++++ b/django/template/defaultfilters.py
+@@ -24,6 +24,7 @@ from django.utils.translation import gettext, ngettext
+ 
+ from .base import Variable, VariableDoesNotExist
+ from .library import Library
++from django.utils.functional import Promise
+ 
+ register = Library()
+ 
+@@ -677,6 +678,13 @@ def add(value, arg):
+     try:
+         return int(value) + int(arg)
+     except (ValueError, TypeError):
++        # Fallback to addition of non-integers (e.g., strings).
++        # If either value or arg is a lazy translation (Promise), convert both to str.
++        if isinstance(value, Promise) or isinstance(arg, Promise):
++            try:
++                return str(value) + str(arg)
++            except Exception:
++                return ''
+         try:
+             return value + arg
+         except Exception:
+diff --git a/tests/template_tests/filter_tests/test_add.py b/tests/template_tests/filter_tests/test_add.py
+index 0fcc661f4a..cdd3e39479 100644
+--- a/tests/template_tests/filter_tests/test_add.py
++++ b/tests/template_tests/filter_tests/test_add.py
+@@ -2,6 +2,7 @@ from datetime import date, timedelta
+ 
+ from django.template.defaultfilters import add
+ from django.test import SimpleTestCase
++from django.utils.translation import gettext_lazy
+ 
+ from ..utils import setup
+ 
+@@ -46,6 +47,11 @@ class AddTests(SimpleTestCase):
+         output = self.engine.render_to_string('add07', {'d': date(2000, 1, 1), 't': timedelta(10)})
+         self.assertEqual(output, 'Jan. 11, 2000')
+ 
++    @setup({'add_lazy': '{{ s1|add:s2 }}'})
++    def test_add_lazy(self):
++        output = self.engine.render_to_string('add_lazy', {'s1': 'foo', 's2': gettext_lazy('bar')})
++        self.assertEqual(output, 'foobar')
++
+ 
+ class FunctionTests(SimpleTestCase):
+ 
