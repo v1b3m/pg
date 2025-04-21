@@ -1,0 +1,6 @@
+                    'migrations.Tag',
+                    models.CASCADE,
+                    auto_created=True,
+                    primary_key=True,
+                    to_field='id',
+                    serialize=False,
