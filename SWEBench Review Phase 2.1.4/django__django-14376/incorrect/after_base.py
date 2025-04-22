@@ -1,0 +1,25 @@
+@@ -200,9 +200,9 @@ class DatabaseWrapper(BaseDatabaseWrapper):
+        if settings_dict['USER']:
+            kwargs['user'] = settings_dict['USER']
+        if settings_dict['NAME']:
+            kwargs['database'] = settings_dict['NAME']
+        if settings_dict['PASSWORD']:
+            kwargs['password'] = settings_dict['PASSWORD']
+        if settings_dict['HOST'].startswith('/'):
+            kwargs['unix_socket'] = settings_dict['HOST']
+        elif settings_dict['HOST']:
+@@ -225,6 +225,15 @@ class DatabaseWrapper(BaseDatabaseWrapper):
+                        ', '.join("'%s'" % s for s in sorted(self.isolation_levels))
+                    ))
+        self.isolation_level = isolation_level
+        # Convert deprecated option keys 'db' and 'passwd' to 'database' and 'password'
+        if 'db' in options:
+            db_value = options.pop('db')
+            if 'database' not in options:
+                options['database'] = db_value
+        if 'passwd' in options:
+            pwd_value = options.pop('passwd')
+            if 'password' not in options:
+                options['password'] = pwd_value
+        kwargs.update(options)
+        return kwargs
