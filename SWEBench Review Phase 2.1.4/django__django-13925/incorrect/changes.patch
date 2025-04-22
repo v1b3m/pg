@@ -1,0 +1,79 @@
+index 4038859cfa..17b6aef507 100644
+--- a/django/db/models/base.py
++++ b/django/db/models/base.py
+@@ -1297,26 +1297,31 @@ class Model(metaclass=ModelBase):
+ 
+     @classmethod
+     def _check_default_pk(cls):
+-        if (
+-            cls._meta.pk.auto_created and
+-            not settings.is_overridden('DEFAULT_AUTO_FIELD') and
+-            not cls._meta.app_config._is_default_auto_field_overridden
+-        ):
+-            return [
+-                checks.Warning(
+-                    f"Auto-created primary key used when not defining a "
+-                    f"primary key type, by default "
+-                    f"'{settings.DEFAULT_AUTO_FIELD}'.",
+-                    hint=(
+-                        f"Configure the DEFAULT_AUTO_FIELD setting or the "
+-                        f"{cls._meta.app_config.__class__.__qualname__}."
+-                        f"default_auto_field attribute to point to a subclass "
+-                        f"of AutoField, e.g. 'django.db.models.BigAutoField'."
++        # Skip warning for auto-created one-to-one parent link if the parent has a manually defined primary key.
++        from django.db.models.fields.related import OneToOneField
++        pk_field = cls._meta.pk
++        if pk_field.auto_created:
++            # If it's an auto-created one-to-one link and parent pk not auto_created, skip warning.
++            if isinstance(pk_field, OneToOneField) and getattr(pk_field.remote_field, 'parent_link', False):
++                parent_model = pk_field.remote_field.model
++                if parent_model is not None and not parent_model._meta.pk.auto_created:
++                    return []
++            if not settings.is_overridden('DEFAULT_AUTO_FIELD') and not cls._meta.app_config._is_default_auto_field_overridden:
++                return [
++                    checks.Warning(
++                        f"Auto-created primary key used when not defining a "
++                        f"primary key type, by default "
++                        f"'{settings.DEFAULT_AUTO_FIELD}'.",
++                        hint=(
++                            f"Configure the DEFAULT_AUTO_FIELD setting or the "
++                            f"{cls._meta.app_config.__class__.__qualname__}."
++                            f"default_auto_field attribute to point to a subclass "
++                            f"of AutoField, e.g. 'django.db.models.BigAutoField'."
++                        ),
++                        obj=cls,
++                        id='models.W042',
+                     ),
+-                    obj=cls,
+-                    id='models.W042',
+-                ),
+-            ]
++                ]
+         return []
+ 
+     @classmethod
+diff --git a/tests/check_framework/test_model_checks.py b/tests/check_framework/test_model_checks.py
+index d4342ada07..5aab69f7a2 100644
+--- a/tests/check_framework/test_model_checks.py
++++ b/tests/check_framework/test_model_checks.py
+@@ -402,6 +402,20 @@ class ModelDefaultAutoFieldTests(SimpleTestCase):
+ 
+         self.assertEqual(checks.run_checks(app_configs=self.apps.get_app_configs()), [])
+ 
++    def test_inherited_manual_pk(self):
++        class Base(models.Model):
++            id = models.BigAutoField(primary_key=True)
++            class Meta:
++                app_label = 'check_framework.apps.CheckDefaultPKConfig'
++        class Child(Base):
++            class Meta:
++                app_label = 'check_framework.apps.CheckDefaultPKConfig'
++        # Run checks and ensure no W042 warning for child
++        warnings_list = checks.run_checks(app_configs=self.apps.get_app_configs())
++        # Filter any warnings with id='models.W042'
++        w42 = [w for w in warnings_list if getattr(w, 'id', None) == 'models.W042' and w.obj in {Base, Child}]
++        self.assertEqual(w42, [])
++
+     def test_explicit_pk(self):
+         class Model(models.Model):
+             id = models.BigAutoField(primary_key=True)
