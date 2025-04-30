@@ -1,29 +1,43 @@
-The tests verify that Django's validators now include the provided value in `ValidationError` messages, allowing custom error messages to use the `%(value)s` placeholder. Here's a summary of the tests:
+Combine fast delete queries
 
-1. **`test_value_placeholder_with_char_field`**:
+### Description
 
-   - Tests various validators (e.g., `validate_integer`, `validate_email`, `validate_slug`) with invalid input values.
-   - Verifies that the error message includes the invalid value using the `%(value)s` placeholder.
+When emulating `ON DELETE CASCADE` via `on_delete=models.CASCADE` the `deletion.Collector` will try to perform fast queries which are `DELETE FROM table WHERE table.pk IN ....`
 
-2. **`test_value_placeholder_with_null_character`**:
+There's a few conditions required for this fast path to be taken but when this happens the collection logic should combine such queries by table to reduce the number of roundtrips to the database. For example, given the following models
 
-   - Tests a `CharField` with a null character (`\0`) in the input.
-   - Confirms that the error message correctly includes the invalid value.
+```python
+class Person(models.Model):
+    friends = models.ManyToManyField("self")
 
-3. **`test_value_placeholder_with_integer_field`**:
 
-   - Tests integer-specific validators (e.g., `MaxValueValidator`, `MinValueValidator`) with invalid integer inputs.
-   - Ensures the error message includes the invalid integer value.
+class User(models.Model):
+    pass
 
-4. **`test_value_placeholder_with_decimal_field`**:
 
-   - Tests a `DecimalField` with invalid decimal inputs (e.g., exceeding max digits or decimal places).
-   - Verifies that the error message includes the invalid decimal value.
+class Entry(models.Model):
+    created_by = models.ForeignKey(User)
+    updated_by = models.ForeignKey(User)
 
-5. **`test_value_placeholder_with_file_field`**:
-   - Tests a `FileField` with an invalid file extension using `validate_image_file_extension`.
-   - Confirms that the error message includes the invalid file name.
+```
 
-### Verification:
+Issuing a `person.delete()` or `user.delete()` will result in 3 queries of the form
 
-Each test uses custom error messages with the `%(value)s` placeholder. The tests validate forms with invalid inputs and assert that the resulting error messages correctly include the provided invalid values, confirming the issue is resolved.
+```sql
+DELETE FROM person_friends WHERE from_id = :id 
+DELETE FROM person_friends WHERE to_id = :id 
+DELETE FROM person WHERE id = :id 
+DELETE FROM entry WHERE created_by_id = :id 
+DELETE FROM entry WHERE updated_by = :id 
+DELETE FROM user WHERE id = :id 
+```
+
+But both queries (or N queries depending on the number of foreign relationships) can be combined into a single one by using
+
+```sql
+OR 
+DELETE FROM person_friends WHERE from_id = :id OR to_id = :id 
+DELETE FROM person WHERE id = :id 
+DELETE FROM entry WHERE created_by_id = :id OR updated_by = :id 
+DELETE FROM user WHERE id = :id
+```
